@@ -4,7 +4,8 @@
   "scripts": {
     "build": "tsoa spec-and-routes",
     "dev": "concurrently 'nodemon' 'nodemon -x tsoa spec-and-routes'",
-    "lint": "prettier --check ."
+    "lint": "prettier --check .",
+    "typeorm": "env-cmd typeorm-ts-node-commonjs"
   },
   "dependencies": {
     "@tsoa/runtime": "5.0.0",
