@@ -2,6 +2,11 @@ import { Body, Controller, Delete, Get, Path, Post, Route, SuccessResponse, Tags
 import { GetBookOutputDto, GetBooksOutputDto, PostBookInputDto, PostBookOutputDto } from "./dto";
 import { createBookCodec, getBookCodec } from "./book.codec";
 
+import CreateBookUseCase from "../../../../core/use-cases/create-book.use-case";
+import DeleteBookUseCase from "../../../../core/use-cases/delete-book.use-case";
+import GetBookUseCase from "../../../../core/use-cases/get-book.use-case";
+import ListBooksUseCase from "../../../../core/use-cases/list-books.use-case";
+
 @Route("books")
 @Tags("Books")
 export class BookController extends Controller {
@@ -16,7 +21,7 @@ export class BookController extends Controller {
     @Get()
     @SuccessResponse(200)
     async list(): Promise<GetBooksOutputDto> {
-        return [];
+        return await new ListBooksUseCase().execute();
     }
 
     /**
@@ -28,14 +33,15 @@ export class BookController extends Controller {
     @SuccessResponse(200)
     async getById(@Path() id: string): Promise<GetBookOutputDto> {
         const bookId = getBookCodec.decodBookId(id);
+        if(!bookId.success){
+            throw "Invalid book id format";
+        }
 
-        return {
-            id: "mock-id",
-            author: "mock-author",
-            summary: "mock-summary",
-            title: "mock-title",
-            totalPages: 100,
-        };
+        const book = await new GetBookUseCase().execute(bookId.data);
+        if(book === "BOOK_NOT_FOUND") {
+            throw "BOOK_NOT_FOUND";
+        }
+        return book;
     }
 
     /**
@@ -53,13 +59,7 @@ export class BookController extends Controller {
             throw decodingResult.error.toString();
         }
         
-        return {
-            id: "mock-id",
-            author: "mock-author",
-            summary: "mock-summary",
-            title: "mock-title",
-            totalPages: 100,
-        };
+        return await new CreateBookUseCase().execute(requestBody);
     }
 
     /**
@@ -74,6 +74,10 @@ export class BookController extends Controller {
         if(!bookId.success){
             throw "Invalid book id format";
         }
-        return;
+        const result = await new DeleteBookUseCase().execute(bookId.data);
+
+        if(result === "BOOK_NOT_FOUND") {
+            throw "BOOK_NOT_FOUND";
+        }
     }
 }

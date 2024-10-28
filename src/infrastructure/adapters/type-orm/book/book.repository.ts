@@ -4,23 +4,23 @@ import { AppDataSource, isInitialized } from "../data-source";
 
 import BookDBEntity from "./book.entity";
 
-class TypeOrmRepository implements BookRepository {
+class TypeORMBookRepository implements BookRepository {
 
     async create({
-title,
- summary, 
- author,
-  totalPages
+        title,
+        summary, 
+        author,
+        totalPages
     }: CreateBookInput): Promise<Book> {
         await isInitialized();
 
         const bookIdentifier = (
             await AppDataSource.getRepository(BookDBEntity).insert({
-            title,
-            summary,
-            author,
-            totalPages
-        })).identifiers.at(0);
+                title,
+                summary,
+                author,
+                totalPages
+            })).identifiers.at(0);
 
         if(!bookIdentifier) {
             throw "Book entity creation failed in type-orm"
@@ -61,3 +61,5 @@ title,
     return deleteResult.affected === 1;
   }
 }
+
+export default TypeORMBookRepository;
