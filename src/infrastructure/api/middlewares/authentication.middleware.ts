@@ -3,6 +3,7 @@ import { AuthenticatedContext } from "../../../core/ports/api.port";
 import { container } from "tsyringe";
 import { UserRepository } from "../../../core/ports/database.port";
 import { ExistingUser, NotExistingUser } from "../../../core/entities/user.entity";
+import { UnauthorizedError } from "../error-handler";
 
 const extractTokenFromRequest = (request: Request): "TOKEN_NOT_FOUND" | string => {
     const authorization = request.headers['authorization'];
@@ -51,13 +52,13 @@ export async function expressAuthentication(
     const token = extractTokenFromRequest(request);
 
     if(token === "TOKEN_NOT_FOUND") {
-        return Promise.reject(new Error("Mising authentication"))
+        return Promise.reject(new UnauthorizedError("Mising authentication"))
     }
 
     const user = await getUserFromJWT(token);
 
     if(user === "INVALID_JWT_TOKEN" || user === "UNKNOWN_USER") {
-        return Promise.reject(new Error("Invalid token"))
+        return Promise.reject(new UnauthorizedError("Invalid token"))
     }
 
     return Promise.resolve(user);

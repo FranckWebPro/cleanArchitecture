@@ -186,6 +186,9 @@
 								}
 							}
 						}
+					},
+					"400": {
+						"description": "Invalid request params"
 					}
 				},
 				"summary": "Create a book",
@@ -223,6 +226,12 @@
 								}
 							}
 						}
+					},
+					"400": {
+						"description": "Invalid request params"
+					},
+					"404": {
+						"description": "Not found"
 					}
 				},
 				"summary": "Get a book by Id",
@@ -251,6 +260,9 @@
 				"responses": {
 					"204": {
 						"description": ""
+					},
+					"404": {
+						"description": "Not found"
 					}
 				},
 				"summary": "Delete a book by Id",
@@ -287,6 +299,12 @@
 								}
 							}
 						}
+					},
+					"400": {
+						"description": "Invalid request params"
+					},
+					"404": {
+						"description": "Not found"
 					}
 				},
 				"summary": "Signin user",
@@ -320,6 +338,12 @@
 								}
 							}
 						}
+					},
+					"400": {
+						"description": "Invalid request params"
+					},
+					"409": {
+						"description": "Already Exist"
 					}
 				},
 				"summary": "Signup user",
