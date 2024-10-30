@@ -105,9 +105,42 @@
 			},
 			"PostBookInputDto": {
 				"$ref": "#/components/schemas/ReturnType_typeofPostBookInputDto.parse_"
+			},
+			"ReturnType_typeofPostUserOutputDto.parse_": {
+				"properties": {
+					"accessToken": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"description": "Obtain the return type of a function type"
+			},
+			"PostUserOutputDto": {
+				"$ref": "#/components/schemas/ReturnType_typeofPostUserOutputDto.parse_"
+			},
+			"ReturnType_typeofPostUserInputDto.parse_": {
+				"properties": {
+					"password": {
+						"type": "string"
+					},
+					"login": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"description": "Obtain the return type of a function type"
+			},
+			"PostUserInputDto": {
+				"$ref": "#/components/schemas/ReturnType_typeofPostUserInputDto.parse_"
 			}
 		},
-		"securitySchemes": {}
+		"securitySchemes": {
+			"jwt": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+			}
+		}
 	},
 	"info": {
 		"title": "boilerplate-cleanarchi",
@@ -134,7 +167,11 @@
 				"tags": [
 					"Books"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
 				"parameters": []
 			},
 			"post": {
@@ -155,7 +192,11 @@
 				"tags": [
 					"Books"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
 				"parameters": [],
 				"requestBody": {
 					"required": true,
@@ -188,7 +229,11 @@
 				"tags": [
 					"Books"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
 				"parameters": [
 					{
 						"description": "The book identifier",
@@ -212,7 +257,11 @@
 				"tags": [
 					"Books"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",
@@ -223,6 +272,72 @@
 						}
 					}
 				]
+			}
+		},
+		"/user/signin": {
+			"post": {
+				"operationId": "Signin",
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PostUserOutputDto"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Signin user",
+				"tags": [
+					"User"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/PostUserInputDto"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user/signup": {
+			"post": {
+				"operationId": "Signup",
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PostUserOutputDto"
+								}
+							}
+						}
+					}
+				},
+				"summary": "Signup user",
+				"tags": [
+					"User"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/PostUserInputDto"
+							}
+						}
+					}
+				}
 			}
 		}
 	},

@@ -1,0 +1,29 @@
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { ExistingUser } from "../../../../core/entities/user.entity";
+
+@Entity()
+class User {
+
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
+
+    @Column({unique: true})
+    login: string;
+    
+
+    @Column()
+    password: string;
+
+    @Column({
+        type: "timestamp without time zone",
+        nullable: false,
+        default: () => "now()",
+    })
+    createdAt: Date;
+
+    toDomainEntity(): ExistingUser {
+        return new ExistingUser({id: this.id});
+    }
+}
+
+export default User;

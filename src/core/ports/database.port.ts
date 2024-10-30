@@ -1,10 +1,16 @@
 import { Book } from "../book.interface";
+import { ExistingUser } from "../entities/user.entity";
 
-export interface CreateBookInput {
+export type CreateBookInput = {
     title: string;
     summary: string;
     author: string;
     totalPages: number;
+}
+
+export type CreateUserInput = {
+    login: string;
+    password: string;
 }
 
 export interface BookRepository {
@@ -14,4 +20,10 @@ export interface BookRepository {
     list(): Promise<Book[]>;
 
     delete(id: string): Promise<boolean>;
+}
+
+export interface UserRepository {
+    create(args: CreateUserInput): Promise<ExistingUser | "USER_ALREADY_EXISTS">;
+    findByLoginAndPassword(login: string, password: string): Promise<ExistingUser | null>;
+    findById(id: string): Promise<ExistingUser | null>;
 }
